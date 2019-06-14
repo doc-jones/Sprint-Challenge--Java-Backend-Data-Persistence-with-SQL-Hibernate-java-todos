@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-// this gets called users here and users in the database
+
 public class User extends Auditable {
 
 
@@ -22,29 +22,27 @@ public class User extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    // Allows the server to auto generate the id (basically id++)
+    // Allows the server to auto generate the id
     private long userid;
 
+    // the value cant be used elsewhere
     @Column(nullable = false, unique = true)
-    // nullable = false // this means the value cant be null
-    // unique = true // means that the value cant be duplicated or in use elsewhere
-    private String username;
 
+    private String username;
+    // the value cant be null
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // we need to make it so the password doesnt get printed as json
+    // password doesnt get printed as json
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
-    // generated code
-
     public User() {
     }
 
-    public User(String username, String password, List<UserRoles> userRoles)
+    public User(String username, String password, List<UserRoles> userRoles, List<Todo> userTodos)
     {
         setUsername(username);
         setPassword(password);
@@ -90,8 +88,6 @@ public class User extends Auditable {
         this.password = password;
     }
 
-    // generated code
-
     public List<UserRoles> getUserRoles() {
         return userRoles;
     }
@@ -100,7 +96,7 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    // simplegrantedauthority which is built into spring security
+    // simplegrantedauthority from spring security
 
     public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();

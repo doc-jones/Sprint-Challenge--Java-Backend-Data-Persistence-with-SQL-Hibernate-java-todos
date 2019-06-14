@@ -50,7 +50,7 @@ public class SeedData implements CommandLineRunner
         User u3 = new User("Bob", "password", users);
         User u4 = new User("Jane", "password", users);
 
-        // the date and time string should get coverted to a datetime Java data type. This is done in the constructor!
+        // the date and time string should get coverted to a datetime Java data type.
         u4.getTodos().add(new Todo("Finish java-orders-swagger", "2019-01-13 04:04:04", u4));
         u4.getTodos().add(new Todo("Feed the turtles", "2019-03-01 04:04:04", u4));
         u4.getTodos().add(new Todo("Complete the sprint challenge", "2019-02-22 04:04:04", u4));

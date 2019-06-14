@@ -2,7 +2,10 @@ package com.lambdaschool.todos.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,6 +38,7 @@ public class Todo{
     @JsonIgnoreProperties("todo")
     private List<User> users = new ArrayList<>();
 
+
     public Todo(String description, String datestarted, boolean completed, List<User> users) {
         this.description = description;
         this.datestarted = datestarted;
@@ -64,14 +68,6 @@ public class Todo{
 
     public void setDatestarted(String datestarted) {
         this.datestarted = datestarted;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 
     public List<User> getUsers() {
