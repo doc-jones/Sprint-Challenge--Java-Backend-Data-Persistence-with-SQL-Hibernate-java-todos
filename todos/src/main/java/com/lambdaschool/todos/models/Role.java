@@ -8,13 +8,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "roles")
-public class Role extends Auditable {
-
+public class Role extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long roleid;
 
-    @Column(nullable = true,
+    @Column(nullable = false,
             unique = true)
     private String name;
 
@@ -27,7 +26,6 @@ public class Role extends Auditable {
     }
 
     public Role(String name) {
-
         this.name = name;
     }
 

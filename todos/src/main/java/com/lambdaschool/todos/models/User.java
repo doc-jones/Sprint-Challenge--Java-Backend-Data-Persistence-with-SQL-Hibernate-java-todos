@@ -19,15 +19,13 @@ public class User extends Auditable {
 
     // user name
     // password (encrypted) with bcrypto
-
+    // Allows the server to auto generate the id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    // Allows the server to auto generate the id
     private long userid;
 
     // the value cant be used elsewhere
     @Column(nullable = false, unique = true)
-
     private String username;
     // the value cant be null
     @Column(nullable = false)
@@ -35,27 +33,24 @@ public class User extends Auditable {
     // password doesnt get printed as json
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
+    private List<ToDo> getToDos;
 
     public User() {
     }
-
-    public User(String username, String password, List<UserRoles> userRoles)
-    {
+    public User(String username, String password, List<UserRoles> userRoles){
         setUsername(username);
         setPassword(password);
-
         // add user roles
 
-        for (UserRoles ur : userRoles )
-        {
+        for(UserRoles ur : userRoles){
             ur.setUser(this);
         }
         this.userRoles = userRoles;
     }
-
 
     public long getUserid() {
         return userid;
@@ -83,8 +78,7 @@ public class User extends Auditable {
         this.password = passwordEncoder.encode(password);
     }
 
-    public void setPasswordNoEncrypt(String password)
-    {
+    public void setPasswordNoEncrypt(String password){
         this.password = password;
     }
 
@@ -99,12 +93,21 @@ public class User extends Auditable {
     // simplegrantedauthority from spring security
 
     public List<SimpleGrantedAuthority> getAuthority(){
+
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
-        for (UserRoles r : this.userRoles)
-        {
+
+        for(UserRoles r : this.userRoles){
             String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
             rtnList.add(new SimpleGrantedAuthority(myRole));
         }
         return rtnList;
+    }
+
+    public List<ToDo> getToDos() {
+        return getToDos();
+    }
+
+    public void setToDos(List<ToDo> toDos) {
+        this.getToDos = toDos;
     }
 }
