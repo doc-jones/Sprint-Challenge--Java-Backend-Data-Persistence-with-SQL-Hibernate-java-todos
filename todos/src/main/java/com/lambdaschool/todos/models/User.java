@@ -97,14 +97,14 @@ public class User extends Auditable
         this.userRoles = userRoles;
     }
 
-    public List<Todo> getQuotes()
+    public List<Todo> getTodos()
     {
-        return quotes;
+        return todos;
     }
 
-    public void setQuotes(List<Todo> quotes)
+    public void setTodos(List<Todo> todos)
     {
-        this.quotes = quotes;
+        this.todos = todos;
     }
 
     public List<SimpleGrantedAuthority> getAuthority()
