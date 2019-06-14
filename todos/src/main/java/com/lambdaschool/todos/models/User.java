@@ -38,6 +38,7 @@ public class User extends Auditable {
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
     private List<ToDo> getToDos;
+    private List<ToDo> toDos;
 
     public User() {
     }
@@ -104,10 +105,10 @@ public class User extends Auditable {
     }
 
     public List<ToDo> getToDos() {
-        return getToDos();
+        return toDos;
     }
 
     public void setToDos(List<ToDo> toDos) {
-        this.getToDos = toDos;
+        this.toDos = toDos;
     }
 }
