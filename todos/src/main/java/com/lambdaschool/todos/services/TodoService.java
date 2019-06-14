@@ -2,18 +2,24 @@ package com.lambdaschool.todos.services;
 
 import com.lambdaschool.todos.models.Todo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface TodoService
 {
-    List<Todo> findAll();
+    ArrayList<Todo> findAll();
 
-    Todo findTodoById(long id);
+    Todo findTodosById(long id);
 
-    List<Todo> findByUserName(String username);
+    Todo findTodosByName(String name);
 
     void delete(long id);
 
-    Todo save(Todo quote);
+    Todo save(Todo todo);
+
+    Todo update(Todo todo, long id);
+
+    void deleteTodos(long todosid);
+
+    void saveTodos(long todosid);
 }
 

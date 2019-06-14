@@ -39,20 +39,17 @@ public class User extends Auditable {
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
-    // generated shit
+    // generated code
 
     public User() {
     }
 
-    // hand written
-
     public User(String username, String password, List<UserRoles> userRoles)
     {
-        // we want to use setters to set this
         setUsername(username);
         setPassword(password);
 
-        // loop & add user roles
+        // add user roles
 
         for (UserRoles ur : userRoles )
         {
@@ -61,7 +58,6 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    // generated
 
     public long getUserid() {
         return userid;
@@ -79,8 +75,7 @@ public class User extends Auditable {
         this.username = username;
     }
 
-    // manually edited
-    // we encrypt it here.
+    // encrypt password
     public String getPassword() {
         return password;
     }
@@ -95,7 +90,7 @@ public class User extends Auditable {
         this.password = password;
     }
 
-    // more generated code
+    // generated code
 
     public List<UserRoles> getUserRoles() {
         return userRoles;
@@ -105,11 +100,7 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    // Another manual thing
-    // theres diff types of simplegrantedauth but this one works ery well for what we want to do
-    // what we want to do is make a list of the type simplegrantedauthority which is built into spring security
-    // this is the thing that allows our roles to truly work.
-    // this is what spring wants
+    // simplegrantedauthority which is built into spring security
 
     public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();

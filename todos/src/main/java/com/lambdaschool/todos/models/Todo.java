@@ -21,7 +21,6 @@ public class Todo{
     @Column(name = "datestarted", nullable = false)
 
 //    @CreatedDate
-//    @Temporal(TIMESTAMP)
 
     protected String datestarted;
 

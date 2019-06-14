@@ -1,11 +1,9 @@
 package com.lambdaschool.todos.services;
 
-import com.lambdaschool.todos.models.Todo;
 import com.lambdaschool.todos.models.User;
 import com.lambdaschool.todos.models.UserRoles;
 import com.lambdaschool.todos.repos.RoleRepository;
 import com.lambdaschool.todos.repos.UserRepository;
-import com.lambdaschool.todos.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,11 +80,6 @@ public class UserServiceImpl implements UserDetailsService, UserService
         }
         newUser.setUserRoles(newRoles);
 
-        for (Todo q : user.getTodos())
-        {
-            newUser.getTodos().add( new Todo(q.getTodo(), newUser));
-        }
-
         return userrepos.save(newUser);
     }
 
@@ -125,13 +118,6 @@ public class UserServiceImpl implements UserDetailsService, UserService
                     }
                 }
 
-                if (user.getTodos().size() > 0)
-                {
-                    for (Todo q : user.getTodos())
-                    {
-                        currentUser.getTodos().add( new Todo(q.getTodo(), currentUser));
-                    }
-                }
                 return userrepos.save(currentUser);
             }
             else
