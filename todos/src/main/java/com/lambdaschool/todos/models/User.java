@@ -9,75 +9,83 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// User is considered the parent entity
 
 @Entity
 @Table(name = "users")
-public class User extends Auditable
-{
+// this gets called users here and users in the database
+public class User extends Auditable {
+
+
+    // user name
+    // password (encrypted) with bcrypto
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    // Allows the server to auto generate the id (basically id++)
     private long userid;
 
-    @Column(nullable = false,
-            unique = true)
+    @Column(nullable = false, unique = true)
+    // nullable = false // this means the value cant be null
+    // unique = true // means that the value cant be duplicated or in use elsewhere
     private String username;
 
+    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // we need to make it so the password doesnt get printed as json
     private String password;
 
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonIgnoreProperties("user")
-    private List<Todo> quotes = new ArrayList<>();
+    // generated shit
 
-    public User()
-    {
+    public User() {
     }
+
+    // hand written
 
     public User(String username, String password, List<UserRoles> userRoles)
     {
+        // we want to use setters to set this
         setUsername(username);
         setPassword(password);
-        for (UserRoles ur : userRoles)
+
+        // loop & add user roles
+
+        for (UserRoles ur : userRoles )
         {
             ur.setUser(this);
         }
         this.userRoles = userRoles;
     }
 
-    public long getUserid()
-    {
+    // generated
+
+    public long getUserid() {
         return userid;
     }
 
-    public void setUserid(long userid)
-    {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword()
-    {
+    // manually edited
+    // we encrypt it here.
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password)
-    {
+    public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
     }
@@ -87,30 +95,24 @@ public class User extends Auditable
         this.password = password;
     }
 
-    public List<UserRoles> getUserRoles()
-    {
+    // more generated code
+
+    public List<UserRoles> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRoles> userRoles)
-    {
+    public void setUserRoles(List<UserRoles> userRoles) {
         this.userRoles = userRoles;
     }
 
-    public List<Todo> getTodos()
-    {
-        return todos;
-    }
+    // Another manual thing
+    // theres diff types of simplegrantedauth but this one works ery well for what we want to do
+    // what we want to do is make a list of the type simplegrantedauthority which is built into spring security
+    // this is the thing that allows our roles to truly work.
+    // this is what spring wants
 
-    public void setTodos(List<Todo> todos)
-    {
-        this.todos = todos;
-    }
-
-    public List<SimpleGrantedAuthority> getAuthority()
-    {
+    public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
-
         for (UserRoles r : this.userRoles)
         {
             String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
@@ -119,4 +121,3 @@ public class User extends Auditable
         return rtnList;
     }
 }
-
