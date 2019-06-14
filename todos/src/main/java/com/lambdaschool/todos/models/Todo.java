@@ -1,80 +1,63 @@
 package com.lambdaschool.todos.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name="todo")
-public class Todo{
-
-
+@Table(name = "todos")
+public class Todo extends Auditable
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long todoid;
 
+    @Column(nullable = false)
+    private String todo;
 
-    @Column(name = "description", nullable = false, unique = true )
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid",
+            nullable = false)
+    @JsonIgnoreProperties({"quotes", "hibernateLazyInitializer"})
+    private User user;
 
-    @Column(name = "datestarted", nullable = false)
-
-//    @CreatedDate
-
-    protected String datestarted;
-
-
-    @Column(name = "completed", nullable = false)
-    private boolean completed = false;
-
-
-    @OneToMany(mappedBy = "todo",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonIgnoreProperties("todo")
-    private List<User> users = new ArrayList<>();
-
-
-    public Todo(String description, String datestarted, boolean completed, List<User> users) {
-        this.description = description;
-        this.datestarted = datestarted;
-        this.completed = completed;
-        this.users = users;
+    public Todo()
+    {
     }
 
-    public long getTodoid() {
+    public Todo(String todo, User user)
+    {
+        this.todo = todo;
+        this.user = user;
+    }
+
+    public long getToodsid()
+    {
         return todoid;
     }
 
-    public void setTodoid(long todoid) {
-        this.todoid = todoid;
+    public void setTodosid(long todosid)
+    {
+        this.todoid = todosid;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTodos()
+    {
+        return todo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTodos(String todos)
+    {
+        this.todo = todos;
     }
 
-    public String getDatestarted() {
-        return datestarted;
+    public User getUser()
+    {
+        return user;
     }
 
-    public void setDatestarted(String datestarted) {
-        this.datestarted = datestarted;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 }
