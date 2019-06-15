@@ -10,10 +10,12 @@ import java.util.Objects;
 @Table(name = "userroles")
 public class UserRoles extends Auditable implements Serializable {
 
+
     @Id
     @ManyToOne
     @JoinColumn(name = "userid")
     @JsonIgnoreProperties("userRoles")
+
     private User user;
 
     @Id
@@ -22,11 +24,16 @@ public class UserRoles extends Auditable implements Serializable {
     @JsonIgnoreProperties("userRoles")
     private Role role;
 
+    // generated code
     public UserRoles(User user, Role role) {
         this.user = user;
         this.role = role;
     }
 
+    public UserRoles() {
+    }
+
+    // generated getters and setters
     public User getUser() {
         return user;
     }
@@ -42,6 +49,8 @@ public class UserRoles extends Auditable implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    // overrrides because of serializable
 
     @Override
     public boolean equals(Object o) {

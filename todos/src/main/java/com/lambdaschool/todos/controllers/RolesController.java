@@ -41,8 +41,6 @@ public class RolesController
     public ResponseEntity<?> addNewRole(@Valid @RequestBody Role newRole) throws URISyntaxException
     {
         newRole = roleService.save(newRole);
-
-        // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newRoleURI = ServletUriComponentsBuilder
                 .fromCurrentRequest()

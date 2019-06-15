@@ -10,47 +10,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 // User is considered the parent entity
+//
 
 @Entity
 @Table(name = "users")
-
 public class User extends Auditable {
-
-
-    // user name
-    // password (encrypted) with bcrypto
-    // Allows the server to auto generate the id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
-    // the value cant be used elsewhere
     @Column(nullable = false, unique = true)
     private String username;
-    // the value cant be null
+
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // password doesnt get printed as json
     private String password;
 
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
-    private List<ToDo> getToDos;
-    private List<ToDo> toDos;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<Todos> todos = new ArrayList<>();
 
     public User() {
     }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public User(String username, String password, List<UserRoles> userRoles){
         setUsername(username);
         setPassword(password);
-        // add user roles
-
-        for(UserRoles ur : userRoles){
-            ur.setUser(this);
+        for(UserRoles roles: userRoles){
+            roles.setUser(this);
         }
         this.userRoles = userRoles;
+    }
+
+    public List<Todos> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todos> todos) {
+        this.todos = todos;
     }
 
     public long getUserid() {
@@ -69,7 +75,6 @@ public class User extends Auditable {
         this.username = username;
     }
 
-    // encrypt password
     public String getPassword() {
         return password;
     }
@@ -91,24 +96,14 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    // simplegrantedauthority from spring security
-
     public List<SimpleGrantedAuthority> getAuthority(){
-
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
 
-        for(UserRoles r : this.userRoles){
-            String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
+        for(UserRoles role: this.userRoles){
+            String myRole = "ROLE_" + role.getRole().getName().toUpperCase();
             rtnList.add(new SimpleGrantedAuthority(myRole));
         }
+
         return rtnList;
-    }
-
-    public List<ToDo> getToDos() {
-        return toDos;
-    }
-
-    public void setToDos(List<ToDo> toDos) {
-        this.toDos = toDos;
     }
 }

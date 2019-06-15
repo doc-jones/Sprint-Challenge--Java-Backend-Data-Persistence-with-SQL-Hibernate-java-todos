@@ -2,7 +2,6 @@ package com.lambdaschool.todos.services;
 
 import com.lambdaschool.todos.models.Role;
 import com.lambdaschool.todos.repos.RoleRepository;
-import com.lambdaschool.todos.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "roleService")
+@Service(value = "roleservice")
 public class RoleServiceImpl implements RoleService
 {
     @Autowired
